@@ -81,7 +81,7 @@ specific_columns = target_cus[selected_columns]
 # sum_bal = specific_columns['Balance'].sum().round(2)
 sum_bal = specific_columns[specific_columns['Balance']>150000].loc[899]
 
-pd.options.display.float_format = 'Rs {:,.2f}'.format
+# pd.options.display.float_format = 'Rs {:,.2f}'.format
 
 # finder geography balance
 geography_balance = df.pivot_table(
@@ -92,4 +92,9 @@ geography_balance = df.pivot_table(
     margins=True
 ).round(2)
 
-print(geography_balance)
+def churn_rate(column_name):
+    churn_rate_df = df.groupby(column_name)['Exited'].mean().mul(100).round(2)
+    return churn_rate_df
+
+gender_churn = churn_rate(['Gender','Geography','IsActiveMember'])
+print(gender_churn)
