@@ -64,4 +64,32 @@ sorted_name_with_country = name_with_country.sort_values(by='Surname',ascending=
 # customer who earn points maximum
 
 customer_earns_max_points  = df.groupby('Surname')['Point Earned'].value_counts()
-print(customer_earns_max_points)
+# print(customer_earns_max_points/)
+
+# selected columns
+
+target = 'Hill'
+selected_columns = df[['Surname','Balance','Exited']]
+
+# find target column how?
+
+
+target_cus = df[df['Surname']== target]
+selected_columns = ['Surname','Balance','Exited']
+specific_columns = target_cus[selected_columns]
+
+# sum_bal = specific_columns['Balance'].sum().round(2)
+sum_bal = specific_columns[specific_columns['Balance']>150000].loc[899]
+
+pd.options.display.float_format = 'Rs {:,.2f}'.format
+
+# finder geography balance
+geography_balance = df.pivot_table(
+    index='Geography',
+    values='Balance',
+    columns='Gender',
+    aggfunc='sum',
+    margins=True
+).round(2)
+
+print(geography_balance)
