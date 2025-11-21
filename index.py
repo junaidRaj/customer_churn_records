@@ -18,7 +18,7 @@ Product_churn_rate = df.groupby('NumOfProducts')['Exited'].mean().mul(100).round
 age_bins = pd.cut(df['Age'], bins=4)
 
 age_churn_rate = df.groupby(age_bins)['Exited'].mean().mul(100).round(2)
-
+# print(age_churn_rate)
 satisfaction_pivot = df.pivot_table(
     values="Satisfaction Score",
     index="Exited",
@@ -27,18 +27,41 @@ satisfaction_pivot = df.pivot_table(
 
 products_churn_rate_df = df.groupby('NumOfProducts')['Exited'].mean().mul(100).round(2).reset_index()
 
-plt.figure(figsize=(8, 5))
+# plt.figure(figsize=(8, 5))
 
-sns.barplot(
-    x='NumOfProducts',
-    y='Exited',
-    data=products_churn_rate_df,
-    palette=['green', 'blue', 'red', 'darkred']
+# sns.barplot(
+#     x='NumOfProducts',
+#     y='Exited',
+#     data=products_churn_rate_df,
+#     palette=['green', 'blue', 'red', 'darkred']
+# )
+
+# plt.title('Operational Risk: Churn Rate by Number of Products', fontsize=14)
+# plt.ylabel('Churn Rate (%)', fontsize=12)
+# plt.xlabel('Number of Products Held by Customer', fontsize=12)
+# plt.yticks(np.arange(0, 101, 20))
+# plt.grid(axis='y', linestyle='--', alpha=0.5)
+# plt.show()
+
+High_risk_customers = df[
+    (df['Balance']>100000) & (df['Satisfaction Score']<=2)
+] 
+
+risk_churn_rate = (High_risk_customers['Exited'].mean()*100).round(2)
+
+satisfaction_balance_pivot = df.pivot_table(
+    index = 'Balance',
+    values = 'Satisfaction Score',
+    aggfunc='mean'
 )
 
-plt.title('Operational Risk: Churn Rate by Number of Products', fontsize=14)
-plt.ylabel('Churn Rate (%)', fontsize=12)
-plt.xlabel('Number of Products Held by Customer', fontsize=12)
-plt.yticks(np.arange(0, 101, 20))
-plt.grid(axis='y', linestyle='--', alpha=0.5)
-plt.show()
+# satisfaction_percentage = df['Satisfaction Score'].value_counts(normalize=True).mul(100).round(2)
+satisfaction_percentage = df['Satisfaction Score'].value_counts()
+
+name_with_country = df[['Surname','Geography']]
+sorted_name_with_country = name_with_country.sort_values(by='Surname',ascending=True)
+
+# customer who earn points maximum
+
+customer_earns_max_points  = df.groupby('Surname')['Point Earned'].value_counts()
+print(customer_earns_max_points)
