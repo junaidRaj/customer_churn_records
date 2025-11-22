@@ -97,4 +97,37 @@ def churn_rate(column_name):
     return churn_rate_df
 
 gender_churn = churn_rate(['Gender','Geography','IsActiveMember'])
-print(gender_churn)
+# print(gender_churn)
+
+gender_satisfaction = df.groupby('Satisfaction Score')['Exited'].value_counts(normalize=True).mul(100).round(2)
+# geo_churn_ = df.groupby('Geography')['Exited'].value_counts(normalize=True).mul(100).round(2)
+
+# geo_churn_ = df.groupby('Geography')['Exited'].mean().mul(100).round(2)
+
+# df_plot = geo_churn_.reset_index(name='Churn Rate')
+
+# plt.figure(figsize=(8, 5))
+
+# sns.barplot(
+#     x='Geography',
+#     y='Churn Rate',
+#     data=df_plot,
+#     palette='viridis'   
+# )
+
+# plt.title('Churn Rate by Geography', fontsize=14)
+# plt.ylabel('Churn Rate (%)', fontsize=12)
+# plt.xlabel('Geography', fontsize=12)
+# plt.show()
+
+gender_churn = df.groupby('Gender')['Exited'].mean().mul(100).round(2)
+
+df_plot = gender_churn.reset_index(name='Churn Rate')
+
+plt.figure(figsize=(6, 4))
+
+sns.barplot(x='Gender',y='Churn Rate',data=df_plot,palette='pastel')
+plt.title('Gender Churn Rate', fontsize=14)
+plt.ylabel('Churn Rate (%)', fontsize=12)
+plt.xlabel('Gender', fontsize=12)
+plt.show()
