@@ -130,4 +130,23 @@ sns.barplot(x='Gender',y='Churn Rate',data=df_plot,palette='pastel')
 plt.title('Gender Churn Rate', fontsize=14)
 plt.ylabel('Churn Rate (%)', fontsize=12)
 plt.xlabel('Gender', fontsize=12)
-plt.show()
+# plt.show()
+
+# learn statistics with python and pandas
+
+summary = df[[
+    'Age',
+    'Balance',
+    'CreditScore'
+]].describe().round(2)
+
+correlation_results = df['Age'].corr(df['Balance'])
+
+avg_age = df['Age'].mean()
+avg_score = df['CreditScore'].mean()
+
+risk_senior_customer = df[
+    (df['Age']>avg_age) & (df['CreditScore']<avg_score)
+]
+ 
+risk_senior_churn = (risk_senior_customer['Exited'].mean() *100).round(2)
